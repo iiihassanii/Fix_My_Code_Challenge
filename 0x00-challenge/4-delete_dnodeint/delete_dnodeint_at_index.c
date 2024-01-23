@@ -1,45 +1,57 @@
 #include "lists.h"
+#include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - Deletes a node at a given position in a doubly linked list.
- * @head: Pointer to the head of the doubly linked list.
- * @index: Index of the node to delete.
+ * delete_dnodeint_at_index - Delete a node at a specific index from a list
  *
- * Return: 1 if successful, -1 if an error occurred.
+ * @head: A pointer to the first element of a list
+ * @index: The index of the node to delete
+ *
+ * Return: 1 on success, -1 on failure
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-	dlistint_t *current, *temp;
-	unsigned int i;
+	dlistint_t *saved_head;
+	dlistint_t *tmp;
+	unsigned int p;
 
-	if (head == NULL || *head == NULL)
-		return -1;
-
-	current = *head;
-	if (index == 0)
+	if (*head == NULL)
 	{
-		*head = current->next;
-		if (*head != NULL)
-			(*head)->prev = NULL;
-		free(current);
-		return 1;
+		return (-1);
 	}
 
-	for (i = 0; i < index - 1; i++)
+	saved_head = *head;
+	p = 0;
+
+	while (p < index && *head != NULL)
 	{
-		if (current == NULL)
-			return -1;
-		current = current->next;
+		*head = (*head)->next;
+		p++;
 	}
-
-	if (current == NULL || current->next == NULL)
-		return -1;
-
-	temp = current->next;
-	current->next = temp->next;
-	if (temp->next != NULL)
-		temp->next->prev = current;
-	free(temp);
-
-	return 1;
+	if (p != index)
+	{
+		*head = saved_head;
+		return (-1);
+	}
+	*head = saved_head;
+	if (0 == index)
+	{
+		tmp = (*head)->next;
+		free(*head);
+		*head = tmp;
+		if (tmp != NULL)
+		{
+			tmp->prev = NULL;
+		}
+	}
+	else
+	{
+		(*head)->prev->prev = (*head)->prev;
+		free(*head);
+		if ((*head)->next)
+			(*head)->next->prev = (*head)->prev;
+		*head = saved_head;
+	}
+	*head = saved_head;
+	return (1);
 }
