@@ -31,7 +31,7 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 		}
 		free(*head);
 		*head = tmp;
-		return (1); // Return success
+		return (1);
 	}
 
 	while (p < index && *head != NULL)
@@ -43,7 +43,7 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 	if (p != index)
 	{
 		*head = saved_head;
-		return (-1); // Node at the specified index not found
+		return (-1);
 	}
 	else
 	{
@@ -57,6 +57,6 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
 		free(tmp);
 		*head = saved_head;
-		return (1); // Return success
+		return (1);
 	}
 }
